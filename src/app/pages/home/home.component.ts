@@ -16,8 +16,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor() { }
 
   ngOnInit() {
-    this.timeInterval = setInterval( ()=>{
-      if (this.turn){
+    this.timeInterval = setInterval(() => {
+      if (this.turn) {
         this.playerOneTime -= 100;
       } else {
         this.playerTwoTime -= 100;
