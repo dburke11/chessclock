@@ -1,0 +1,7 @@
+{
+  "name": "chessclock",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
