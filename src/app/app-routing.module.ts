@@ -1,16 +1,18 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AppleComponent } from './pages/apple/apple.component';
+import { HomeComponent } from './pages/home/home.component';
+
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'folder/Inbox',
-    pathMatch: 'full'
-  },
+    component: HomeComponent 
+  }, 
   {
-    path: 'folder/:id',
-    loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
-  }
+    path: 'apple',
+    component: AppleComponent 
+  },
 ];
 
 @NgModule({
