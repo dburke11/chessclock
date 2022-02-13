@@ -1,13 +1,27 @@
-
 <ion-grid class="container ion-no-border" slot="fix">
   <ion-row class="row-1">
-    <ion-button class="timer-1" (click)="handleOnClick()" expand="full" [color]="turn ? 'success': 'danger'" [disabled]="!turn">
-      {{playerOneTime | time }}
+    <ion-button
+      class="timer-1"
+      (click)="handleOnClick(currentPlayer)"
+      expand="full"
+      [color]="isPlayerDisabled(playerOne) ? 'danger' : 'success'"
+      [disabled]="isPlayerDisabled(playerOne)"
+    >
+      {{ playerOneTime | time }}
     </ion-button>
   </ion-row>
+  <ion-row>
+    <ion-button (click)="boardSwap()"> SWAP </ion-button>
+  </ion-row>
   <ion-row class="row-2">
-    <ion-button class="timer-2" (click)="handleOnClick()" expand="full" [color]="turn ? 'danger': 'success'" [disabled]="turn">
-      {{playerTwoTime | time }}
+    <ion-button
+      class="timer-2"
+      (click)="handleOnClick(currentPlayer)"
+      expand="full"
+      [color]="isPlayerDisabled(playerTwo) ? 'danger' : 'success'"
+      [disabled]="isPlayerDisabled(playerTwo)"
+    >
+      {{ playerTwoTime | time }}
     </ion-button>
   </ion-row>
 </ion-grid>
