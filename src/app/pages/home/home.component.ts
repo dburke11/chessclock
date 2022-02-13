@@ -1,13 +1,11 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { TimePipe } from 'src/app/shared/pipes/time.pipe';
+import { TimerService } from 'src/app/shared/services/timer.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  providers: [
-    TimePipe
-  ]
 })
 
 export class HomeComponent implements OnInit, OnDestroy {
@@ -15,7 +13,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public playerOneTime: number = 600000; // 10 minutes
   public playerTwoTime: number = 600000;
   private timeInterval = null;
-  constructor() { }
+  constructor(private timerService: TimerService) { }
 
   ngOnInit() {
     this.timeInterval = setInterval(() => {
@@ -26,13 +24,14 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     }, 100);
   }
+
   ngOnDestroy(): void {
     if (this.timeInterval) {
       clearInterval(this.timeInterval);
     }
   }
-  public handleOnClick(value: string) {
+
+  public handleOnClick() {
     this.turn = !this.turn;
-    console.log(value);
   }
 }
