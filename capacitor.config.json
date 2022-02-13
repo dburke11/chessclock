@@ -2,5 +2,8 @@
 	"appId": "io.ionic.starter",
 	"appName": "chessclock",
 	"webDir": "www",
-	"bundledWebRuntime": false
+	"bundledWebRuntime": false,
+	"ios": {
+		"contentInset": "always"
+	}
 }
