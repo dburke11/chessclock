@@ -1,16 +1,18 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { interval } from 'rxjs';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { TimePipe } from 'src/app/shared/pipes/time.pipe';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  
+  providers: [
+    TimePipe
+  ]
 })
 
 export class HomeComponent implements OnInit, OnDestroy {
   public turn: boolean = true;
-  public playerOneTime: number = 600000;
+  public playerOneTime: number = 600000; // 10 minutes
   public playerTwoTime: number = 600000;
   private timeInterval = null;
   constructor() { }
@@ -22,7 +24,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       } else {
         this.playerTwoTime -= 100;
       }
-      
     }, 100);
   }
   ngOnDestroy(): void {
