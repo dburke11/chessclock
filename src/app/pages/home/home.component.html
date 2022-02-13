@@ -10,8 +10,11 @@
       {{ playerOneTime | time }}
     </ion-button>
   </ion-row>
-  <ion-row>
-    <ion-button (click)="boardSwap()"> SWAP </ion-button>
+  <ion-row class="divider">
+    <ion-button class="divider-buttons" [disabled]="!preGame" (click)="boardSwap()"> SWAP </ion-button>
+    <ion-button class="divider-buttons" (click)="onSettingsClick()"> SETTINGS </ion-button>
+    <ion-button class="divider-buttons" [disabled]="preGame" (click)="restartGame()"> RESTART </ion-button>
+    <ion-button class="divider-buttons" [disabled]="preGame || gameOver" (click)="pauseGame()"> {{ isPaused ? 'Resume' : 'Pause'}}</ion-button>
   </ion-row>
   <ion-row class="row-2">
     <ion-button

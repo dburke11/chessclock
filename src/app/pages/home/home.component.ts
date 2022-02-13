@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { IonToggle } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { TimerService } from 'src/app/shared/services/timer.service';
 
@@ -9,11 +10,13 @@ import { TimerService } from 'src/app/shared/services/timer.service';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   public turn: boolean = true;
-  public playerOneTime: number = 60000; // 10 minutes
-  public playerTwoTime: number = 60000;
+  private gameTime: number = 10 * 1000; // 10 minutes
+  public playerOneTime: number; 
+  public playerTwoTime: number;
   private timeInterval: Subscription;
-  private preGame: boolean = true; //TODO yet to implement restart, this will control pre game state
-  private gameOver: boolean = false;
+  public preGame: boolean = true; //TODO yet to implement restart, this will control pre game state
+  public gameOver: boolean = false;
+  public isPaused: boolean = false;
   public readonly colors = {
     WHITE: 'WHITE',
     BLACK: 'BLACK',
@@ -24,13 +27,32 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(private timerService: TimerService) {}
 
   ngOnInit() {
-    this.currentPlayer = this.colors.WHITE;
     this.playerOne = this.colors.WHITE;
     this.playerTwo = this.colors.BLACK;
+    this.restartGame();
   }
 
   ngOnDestroy(): void {
     this.stopClock();
+  }
+
+  public pauseGame() {
+    if (this.isPaused) {
+      this.startClock();
+    } else {
+      this.stopClock();
+    }
+    this.isPaused = !this.isPaused;
+  }
+
+  public restartGame() {
+    this.preGame = true;
+    this.currentPlayer = this.colors.WHITE;
+    this.stopClock();
+    this.playerOneTime = this.gameTime;
+    this.playerTwoTime = this.gameTime;
+    this.gameOver = false;
+    this.isPaused = false;
   }
 
   public boardSwap() {
@@ -51,7 +73,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   public isPlayerDisabled(player: string) {
-    return this.currentPlayer !== player;
+    return this.isPaused || this.currentPlayer !== player;
   }
 
   private startClock() {
@@ -59,6 +81,10 @@ export class HomeComponent implements OnInit, OnDestroy {
       .startInterval()
       .subscribe(() => this.clockLogic());
     this.preGame = false;
+  }
+
+  public onSettingsClick() { // TBI
+    return null;
   }
 
   private clockLogic() {
@@ -69,13 +95,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
     if (this.playerOneTime <= 0 || this.playerTwoTime <= 0) {
       this.stopClock();
+      this.gameOver = true;
     }
   }
 
   private stopClock() {
     if (this.timeInterval) {
       this.timeInterval.unsubscribe();
+      this.timeInterval = null;
     }
-    this.gameOver = true;
   }
 }
