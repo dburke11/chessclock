@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { AppleComponent } from './pages/apple/apple.component';
 import { HomeComponent } from './pages/home/home.component';
+import { SettingsComponent } from './pages/settings/settings.component';
 
 
 const routes: Routes = [
@@ -10,8 +10,8 @@ const routes: Routes = [
     component: HomeComponent 
   }, 
   {
-    path: 'apple',
-    component: AppleComponent 
+    path: 'settings',
+    component: SettingsComponent
   },
 ];
 
