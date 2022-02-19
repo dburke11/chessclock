@@ -14,7 +14,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   public turn: boolean = true;
   public playerOneTime: number;
   public playerTwoTime: number;
-  private timeInterval: Subscription;
   public preGame: boolean = true; //TODO yet to implement restart, this will control pre game state
   public gameOver: boolean = false;
   public isPaused: boolean = false;
@@ -26,6 +25,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public playerTwo: string;
   public currentPlayer: string;
   private config: ConfigSettings = null;
+  private timeInterval: Subscription;
   private configSubscription: Subscription = null;
   constructor(
     private timerService: TimerService,
@@ -33,14 +33,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     private settings: SettingsService
   ) {}
 
-  ngOnInit() {
-    console.log('init');
-    this.config = this.settings.getConfig();
+  async ngOnInit() {
+    this.config = await this.settings.getConfig();
     this.configSubscription = this.settings.configSubject.subscribe(
       (config) => {
         this.config = config;
         this.restartGame();
-        console.log('config emmitted', config);
       }
     );
     this.playerOne = this.colors.WHITE;
@@ -52,17 +50,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.configSubscription) {
       this.configSubscription.unsubscribe();
     }
-    console.log('destroy');
     this.stopClock();
   }
 
-  public pauseGame() {
+  public togglePause() {
     if (this.isPaused) {
-      this.startClock();
+      this.resumeGame();
     } else {
-      this.stopClock();
+      this.pauseGame();
     }
-    this.isPaused = !this.isPaused;
   }
 
   public restartGame() {
@@ -84,8 +80,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   public handleOnClick(player: string) {
-    console.log(player);
-    if (player === this.playerOne){
+    if (player === this.playerOne) {
       this.playerOneTime += this.config.increment;
     } else {
       this.playerTwoTime += this.config.increment;
@@ -93,14 +88,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.currentPlayer =
       player === this.colors.WHITE ? this.colors.BLACK : this.colors.WHITE;
 
-
     if (!this.timeInterval) {
       this.startClock();
     }
   }
 
   public isPlayerDisabled(player: string) {
-    return this.isPaused || this.currentPlayer !== player;
+    return this.gameOver || this.isPaused || this.currentPlayer !== player;
   }
 
   private startClock() {
@@ -111,13 +105,24 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   public onSettingsClick() {
-    // TBI
-    this.stopClock();
-    this.isPaused = true;
+    if (!this.preGame) {
+      this.pauseGame();
+    }
     this.router.navigate(['settings']);
   }
 
+  private pauseGame() {
+    this.isPaused = true;
+    this.stopClock();
+  }
+
+  private resumeGame() {
+    this.isPaused = false;
+    this.startClock();
+  }
+
   private clockLogic() {
+
     if (this.currentPlayer === this.playerOne) {
       this.playerOneTime -= this.timerService.INTERVAL_TIMER;
     } else {
@@ -128,7 +133,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.gameOver = true;
     }
   }
-
   private stopClock() {
     if (this.timeInterval) {
       this.timeInterval.unsubscribe();

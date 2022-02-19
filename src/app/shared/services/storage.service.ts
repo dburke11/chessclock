@@ -28,7 +28,6 @@ export class StorageService {
       if (!!value) {
         const storageKey = this.formatAppStorageKey(key);
         const storedValue = JSON.stringify(value);
-        console.log('Setting sotrage', storageKey, storedValue);
         if (this.capPlatformService.isNative) {
           return this.capStorageService.set(storageKey, storedValue);
         } else {
@@ -36,7 +35,7 @@ export class StorageService {
         }
       }
     } catch (error) {
-      console.error('set errror', error);
+      console.error('set error', error);
     }
   }
 

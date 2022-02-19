@@ -1,9 +1,12 @@
 <div>
   <button class="divider-buttons" (click)="clickHome()">HOME</button>
-  <form #f="ngForm" (ngSubmit)="clickSubmitTime(f)" name="'custom-time" ng-controller="time-input">
+  <form #f="ngForm" (ngSubmit)="clickSubmitTime(f)">
     <label> Time:
-        <input type="number" name="userInput" ngModel>
-        <button class="divider-buttons">Submit</button>
+        <input type="number" name="duration" ngModel>
      </label>
+     <label> Increment:
+      <input type="number" name="increment" ngModel>
+   </label>
+   <button class="divider-buttons">Submit</button>
   </form>
 </div>

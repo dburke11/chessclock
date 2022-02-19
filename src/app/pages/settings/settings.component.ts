@@ -9,9 +9,6 @@ import { SettingsService } from 'src/app/shared/services/settings.service';
   templateUrl: './settings.component.html',
 })
 export class SettingsComponent {
-  private gameTime: number;
-  private increment: number;
-
   constructor(private router: Router, private settings: SettingsService) {}
 
   clickHome() {
@@ -19,36 +16,19 @@ export class SettingsComponent {
   }
 
   clickSubmitTime(form: NgForm) {
-    const { userInput } = form.value;
-    console.log(form.value.userInput);
+    const { duration, increment } = form.value;
     const settings: ConfigSettings = {
-      duration: userInput,
-      increment: userInput,
+      duration,
+      increment,
     };
     this.settings.setConfig(settings);
-    // return this.userInput = this.value;
   }
 
-  minute() {
-    //minute to millisecond
-    return this.gameTime * 60 * 1000;
-  }
+  clickTimeThree() {}
 
-  second() {
-    return this.increment * 1000; //second to millisecond
-  }
+  clickTimeFive() {}
 
-  clickTimeThree() {
-    this.gameTime = 3;
-  }
-
-  clickTimeFive() {
-    this.gameTime = 5;
-  }
-
-  clickTimeTen() {
-    this.gameTime = 10;
-  }
+  clickTimeTen() {}
 
   clickTimeCustom() {}
 
