@@ -97,18 +97,18 @@ export class HomeComponent implements OnInit, OnDestroy {
     return this.gameOver || this.isPaused || this.currentPlayer !== player;
   }
 
-  private startClock() {
-    this.timeInterval = this.timerService
-      .startInterval()
-      .subscribe(() => this.clockLogic());
-    this.preGame = false;
-  }
-
   public onSettingsClick() {
     if (!this.preGame) {
       this.pauseGame();
     }
     this.router.navigate(['settings']);
+  }
+
+  private startClock() {
+    this.timeInterval = this.timerService
+      .startInterval()
+      .subscribe(() => this.clockLogic());
+    this.preGame = false;
   }
 
   private pauseGame() {
@@ -122,7 +122,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private clockLogic() {
-
     if (this.currentPlayer === this.playerOne) {
       this.playerOneTime -= this.timerService.INTERVAL_TIMER;
     } else {
@@ -133,6 +132,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.gameOver = true;
     }
   }
+  
   private stopClock() {
     if (this.timeInterval) {
       this.timeInterval.unsubscribe();

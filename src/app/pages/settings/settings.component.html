@@ -1,12 +1,24 @@
-<div>
-  <button class="divider-buttons" (click)="clickHome()">HOME</button>
-  <form #f="ngForm" (ngSubmit)="clickSubmitTime(f)">
-    <label> Time:
-        <input type="number" name="duration" ngModel>
-     </label>
-     <label> Increment:
-      <input type="number" name="increment" ngModel>
-   </label>
-   <button class="divider-buttons">Submit</button>
-  </form>
-</div>
+<ion-grid class="container ion-no-border" slot="fix">
+  <ion-row class="top">
+    <button class="home-button" (click)="clickHome()">HOME</button>
+  </ion-row>
+  <div>
+    <form [formGroup]="form">
+      <label class ="row-1">
+        <input class="hours" placeholder="HH" min="0" max="99" type="number" formControlName="hours">
+        <div class="separator sep-1">:</div>
+        <input class="minutes" min="0" placeholder="MM" max="99" type="number" formControlName="minutes">
+        <div class="separator sep-2">:</div>
+        <input class="seconds" min="0" placeholder="SS" max="99" type="number" formControlName="seconds">
+        <div class="separator sep-3">:</div>
+        <input class="increment" min="0" placeholder="I" type="number" formControlName="increment">
+      </label>
+    </form>
+
+
+      <button class="divider-buttons" (click)="clickSubmitTime()">
+        Submit
+      </button>
+
+  </div>
+</ion-grid>
