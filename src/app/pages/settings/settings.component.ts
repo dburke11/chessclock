@@ -76,6 +76,33 @@ export class SettingsComponent implements OnInit {
     return increment / TIMES.ONE_SECOND;
   }
 
+  durationToMS(hours: number, minutes: number, seconds: number) {
+    return (
+      hours * TIMES.ONE_HOUR +
+      minutes * TIMES.ONE_MINUTE +
+      seconds * TIMES.ONE_SECOND
+    );
+  }
+
+  private msToTime(duration) {
+    let seconds = Math.floor((duration / 1000) % 60);
+    let minutes = Math.floor((duration / (1000 * 60)) % 60);
+    let hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+    return {
+      hours: hours,
+      minutes: minutes,
+      seconds: seconds,
+    }
+  }
+
+  incToMS(increment: number) {
+    return increment * TIMES.ONE_SECOND;
+  }
+
+  incToSeconds(increment: number) {
+    return increment / TIMES.ONE_SECOND;
+  }
+
   clickTimeThree() {}
 
   clickTimeFive() {}
