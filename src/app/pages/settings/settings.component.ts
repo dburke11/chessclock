@@ -71,7 +71,6 @@ export class SettingsComponent implements OnInit {
       increment: this.incToMS(increment),
     };
     this.settings.setConfig(settings);
-    console.log(this.form.value);
   }
 
   durationToMS(hours: number, minutes: number, seconds: number) {

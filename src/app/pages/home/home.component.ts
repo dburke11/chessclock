@@ -163,7 +163,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.pausedColor === this.buttonColors.WARNING
         ? this.buttonColors.MEDIUM
         : this.buttonColors.WARNING;
-    console.log(Date.now());
   }
 
   private clockLogic() {
