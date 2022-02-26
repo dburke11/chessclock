@@ -24,8 +24,18 @@ export class HomeComponent implements OnInit, OnDestroy {
   public playerOne: string;
   public playerTwo: string;
   public currentPlayer: string;
+  private pausedColor: string;
+  private readonly buttonColors = {
+    SUCCESS: 'success',
+    DANGER: 'danger',
+    WARNING: 'warning',
+    LIGHT: 'light',
+    PRIMARY: 'primary',
+    MEDIUM: 'medium',
+  };
   private config: ConfigSettings = null;
   private timeInterval: Subscription;
+  private pauseInterval: Subscription;
   private configSubscription: Subscription = null;
   constructor(
     private timerService: TimerService,
@@ -34,6 +44,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   ) {}
 
   async ngOnInit() {
+    this.pausedColor = this.buttonColors.WARNING;
     this.config = await this.settings.getConfig();
     this.configSubscription = this.settings.configSubject.subscribe(
       (config) => {
@@ -49,6 +60,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.configSubscription) {
       this.configSubscription.unsubscribe();
+    }
+    if (this.pauseInterval) {
+      this.pauseInterval.unsubscribe();
     }
     this.stopClock();
   }
@@ -69,6 +83,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.playerTwoTime = this.config.duration;
     this.gameOver = false;
     this.isPaused = false;
+    if (this.pauseInterval) {
+      this.pauseInterval.unsubscribe();
+    }
   }
 
   public boardSwap() {
@@ -76,6 +93,16 @@ export class HomeComponent implements OnInit, OnDestroy {
       const temp = this.playerOne;
       this.playerOne = this.playerTwo;
       this.playerTwo = temp;
+    }
+  }
+
+  public getButtonColor(player: string) {
+    if (this.isPlayerDisabled(player)) {
+      return this.isPaused && player === this.currentPlayer
+        ? this.pausedColor
+        : this.buttonColors.MEDIUM;
+    } else {
+      return this.buttonColors.PRIMARY;
     }
   }
 
@@ -112,13 +139,31 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private pauseGame() {
+    if (!this.pauseInterval) {
+      this.pauseInterval = this.timerService
+        .pauseInterval()
+        .subscribe(() => this.blink());
+    }
     this.isPaused = true;
     this.stopClock();
   }
 
   private resumeGame() {
     this.isPaused = false;
+    if (this.pauseInterval) {
+      this.pauseInterval.unsubscribe();
+      this.pauseInterval = null;
+    }
     this.startClock();
+  }
+
+  private blink() {
+    //makes the current player's paused timer blink
+    this.pausedColor =
+      this.pausedColor === this.buttonColors.WARNING
+        ? this.buttonColors.MEDIUM
+        : this.buttonColors.WARNING;
+    console.log(Date.now());
   }
 
   private clockLogic() {
@@ -132,7 +177,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.gameOver = true;
     }
   }
-  
+
   private stopClock() {
     if (this.timeInterval) {
       this.timeInterval.unsubscribe();
