@@ -1,7 +1,9 @@
 .container {
   margin: 0;
   padding: 0;
-
+  ion-icon {
+    font-size: 35px; 
+}
   .row-1,
   .row-2 {
     height: 47.5%;
@@ -19,6 +21,10 @@
     width: 100%;
     display: flex;
     .divider-buttons {
+      outline: none !important;
+      --border-color: none; 
+      --border-width: 0px !important;
+      --box-shadow:none; 
       height: 100%;
       width: 25%;
       margin: 0;
