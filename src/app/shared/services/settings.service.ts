@@ -8,12 +8,15 @@ import { StorageService } from './storage.service';
 })
 export class SettingsService {
   constructor(private storage: StorageService) {}
-  
+
   private _config: ConfigSettings = null;
-  private _defaultConfig: ConfigSettings = { duration: 600000, increment: 5000 };
+  private _defaultConfig: ConfigSettings = {
+    duration: 1200000,
+    increment: 1000,
+  };
 
   public configSubject = new Subject<ConfigSettings>();
-  
+
   public setConfig(config: ConfigSettings) {
     this._config = config;
     this.configSubject.next(config);
