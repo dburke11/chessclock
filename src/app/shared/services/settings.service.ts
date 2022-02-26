@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { CUSTOM_TIME_CONTROL_ID, PRESETS, TIMES } from '../constants/constants';
 import { ConfigSettings } from '../interfaces/config.settings';
 import { StorageService } from './storage.service';
 
@@ -11,8 +12,9 @@ export class SettingsService {
 
   private _config: ConfigSettings = null;
   private _defaultConfig: ConfigSettings = {
-    duration: 1200000,
-    increment: 1000,
+    timeControlId: CUSTOM_TIME_CONTROL_ID,
+    duration: 10 * TIMES.ONE_MINUTE,
+    increment: 0,
   };
 
   public configSubject = new Subject<ConfigSettings>();
