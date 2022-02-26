@@ -2,23 +2,57 @@
   <ion-row class="top">
     <button class="home-button" (click)="clickHome()">HOME</button>
   </ion-row>
-  <div>
+  <div> Custom Time
     <form [formGroup]="form">
-      <label class ="row-1">
-        <input class="hours" placeholder="HH" min="0" max="99" type="number" formControlName="hours">
+      <label class="row-1">
+        <input
+          class="hours"
+          placeholder="HH"
+          min="0"
+          max="99"
+          type="number"
+          formControlName="hours"
+        />
         <div class="separator sep-1">:</div>
-        <input class="minutes" min="0" placeholder="MM" max="99" type="number" formControlName="minutes">
+        <input
+          class="minutes"
+          min="0"
+          placeholder="MM"
+          max="99"
+          type="number"
+          formControlName="minutes"
+        />
         <div class="separator sep-2">:</div>
-        <input class="seconds" min="0" placeholder="SS" max="99" type="number" formControlName="seconds">
+        <input
+          class="seconds"
+          min="0"
+          placeholder="SS"
+          max="99"
+          type="number"
+          formControlName="seconds"
+        />
         <div class="separator sep-3">:</div>
-        <input class="increment" min="0" placeholder="I" type="number" formControlName="increment">
+        <input
+          class="increment"
+          min="0"
+          placeholder="I"
+          type="number"
+          formControlName="increment"
+        />
       </label>
     </form>
-
-
-      <button class="divider-buttons" (click)="clickSubmitTime()">
-        Submit
-      </button>
-
+    <button class="divider-buttons" (click)="clickSubmitTime()">Submit</button>
   </div>
+  <ion-item> 
+    <ion-label>Time Control</ion-label>
+    <ion-select
+      #s
+      (ionChange)="handleOnChange(s.value)"
+      interface="action-sheet"
+    >
+      <ion-select-option *ngFor="let option of presets" [value]="option">{{
+        option.displayText
+      }}</ion-select-option>
+    </ion-select>
+  </ion-item>
 </ion-grid>
