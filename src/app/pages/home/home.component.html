@@ -1,15 +1,36 @@
-
 <ion-grid class="container ion-no-border" slot="fix">
-  <ion-column class="column">
-    <ion-row class="row-1">
-      <ion-button class="timer-1" (click)="handleOnClick('timer1')" expand="full" [color]="turn ? 'success': 'danger'" [disabled]="!turn">
-        {{playerOneTime}}
-      </ion-button>
-    </ion-row>
-    <ion-row class="row-2">
-      <ion-button class="timer-2" (click)="handleOnClick('timer2')" expand="full" [color]="turn ? 'danger': 'success'" [disabled]="turn">
-        {{playerTwoTime}}
-      </ion-button>
-    </ion-row>
-  </ion-column>
+  <ion-row class="row-1">
+    <ion-button
+      class="timer-1"
+      (click)="handleOnClick(currentPlayer)"
+      expand="full"
+      [color]="getButtonColor(playerOne)"
+      [disabled]="isPlayerDisabled(playerOne)"
+    >
+      {{ playerOneTime | time }}
+    </ion-button>
+  </ion-row>
+  <ion-row class="divider">
+    <ion-button class="divider-buttons" expand="full" [disabled]="!preGame" (click)="boardSwap()"> <ion-icon name="swap-vertical-outline"></ion-icon> </ion-button>
+    <ion-button class="divider-buttons" expand="full" (click)="onSettingsClick()"> <ion-icon name="settings-outline"></ion-icon> </ion-button>
+    <ion-button class="divider-buttons" expand="full" [disabled]="preGame" (click)="restartGame()"> <ion-icon name="reload-outline"></ion-icon> </ion-button>
+    
+    <ion-button class="divider-buttons" expand="full" [disabled]="preGame || gameOver" (click)="togglePause()"> 
+      <ion-icon *ngIf="!isPaused" name="pause-circle-outline"></ion-icon>
+      <ion-icon *ngIf="isPaused" name="play-outline"></ion-icon>
+      <!-- {{ isPaused ? 'Resume' : 'Pause'}} -->
+    </ion-button>
+
+  </ion-row>
+  <ion-row class="row-2">
+    <ion-button
+      class="timer-2"
+      (click)="handleOnClick(currentPlayer)"
+      expand="full"
+      [color]="getButtonColor(playerTwo)"
+      [disabled]="isPlayerDisabled(playerTwo)"
+    >
+      {{ playerTwoTime | time }}
+    </ion-button>
+  </ion-row>
 </ion-grid>
